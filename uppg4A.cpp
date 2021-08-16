@@ -20,7 +20,7 @@ const int ANTAL_BOKSTAVER = 26;  //A-Z
 // Använd exakt de funktionsnamn som finns nedan
 
 // Funktionen berakna_histogram_abs
-int berakna_histogram_abs(string mening, char bokstaver[], int (&histogram)[]);
+int berakna_histogram_abs(string mening, char bokstaver[], int histogram[]);
 
 // Funktionen skriv_histogram_abs
 void skriv_histogram_abs(int histogram[], char bokstaver[], int totalt);
@@ -53,7 +53,7 @@ int main()
 
 //--------------------------------------------------------
 // Funktionsdefinitioner:
-int berakna_histogram_abs(string mening, char bokstaver[], int (&histogram)[]){  
+int berakna_histogram_abs(string mening, char bokstaver[], int histogram[]){  
   int aktuell_bokstav;
   int totalen = 0;
 
@@ -64,7 +64,7 @@ int berakna_histogram_abs(string mening, char bokstaver[], int (&histogram)[]){
     aktuell_bokstav = tolower(mening.at(i));
     for(int j=0; j<ANTAL_BOKSTAVER; j++){
       if(aktuell_bokstav == bokstaver[j]){
-        histogram[i]++;
+        histogram[j]++;
         totalen++;
       }
     }
