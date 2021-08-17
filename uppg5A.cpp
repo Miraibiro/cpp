@@ -1,7 +1,7 @@
 //
 // Programskal till Inlupp5A
 //
-// Hanterar fallet med 26 bokst�ver A-Z
+// Hanterar fallet med 26 bokstäver A-Z
 
 #include <string>
 #include <cctype>
@@ -12,17 +12,17 @@ using namespace std;
 
 // Globala konstanter:
 
-// Tips: Anv�nd de globala konstanterna ANTAL_BOKSTAVER och ANTAL_SPRAK
-// ist�llet f�r v�rdena 26 och 4 i programmet.
+// Tips: Använd de globala konstanterna ANTAL_BOKSTAVER och ANTAL_SPRAK
+// istället för värdena 26 och 4 i programmet.
 const int ANTAL_BOKSTAVER = 26;  // A-Z
 const int ANTAL_SPRAK = 4;
 
 // 2d-arrayen TOLK_HJALP inneh�ller bokstavsfrekvensen i %
-// f�r fyra spr�k. TOLK_HJALP[0][0] �r frekvensen av
-// bokstaven a f�r engelska. TOLK_HJALP[0][25] �r frekvensen av
-// bokstaven z f�r engelska.
-// Arrayen �r en GLOBAL KONSTANT och skall allts� ej skickas
-// som parameter till den funktion som beh�ver den.
+// för fyra språk. TOLK_HJALP[0][0] är frekvensen av
+// bokstaven a för engelska. TOLK_HJALP[0][25] är frekvensen av
+// bokstaven z för engelska.
+// Arrayen är en GLOBAL KONSTANT och skall alltså ej skickas
+// som parameter till den funktion som behöver den.
 const double TOLK_HJALP[ANTAL_SPRAK][ANTAL_BOKSTAVER]=
        {{8.27,1.48,2.94,4.03,11.78,2.22,1.72,6.77, // engelska
          7.39,0.12,0.81,3.76,2.85,6.71,7.79,1.54,
@@ -41,17 +41,27 @@ const double TOLK_HJALP[ANTAL_SPRAK][ANTAL_BOKSTAVER]=
          0.01,6.30,6.99,5.19,3.92,0.77,1.79,0.01,
          0.69,1.24}};
 
-// Globala variabler �r ej till�tna
+// Globala variabler är ej tillåtna
 
 //--------------------------------------------------------
-// H�r kommer klassdeklarationen
+// Här kommer klassdeklarationen
+
 class Text
-{
-    string texten;
-  public:
-    void setText(string text_in);
-    void beraknaHistogramAbs();
-    void skrivHistogramAbs();
+{ 
+private: 
+  string mening;
+  int histogram[ANTAL_BOKSTAVER] = {0};
+  const char bokstaver[ANTAL_BOKSTAVER] = 
+  {'a','b','c','d','e','f','g','h','i','j','k','l','m',
+  'n','o','p','q','r','s','t','u','v','w','x','y','z'};
+  int totalen;
+
+
+public: 
+  Text();
+  void setText(const string &nyText);
+  bool beraknaHistogramAbs();
+  void skrivHistogramAbs();
 };
 
 // -------------------------------------------------------
@@ -64,23 +74,63 @@ int main()
   string text;
   Text minText;  // Ett objekt av typen Text skapas
 
-  // L�s in en rad med text fr�n tangentbordet
+  // LÄs in en rad med text från tangentbordet
   cout <<"Ge en rad med text:" << endl;
   getline(cin,text);
 
-  // Skicka str�ngen text till objektet minText
-  minText.setText( text );
+  // Skicka strängen text till objektet minText
+  minText.setText(text);
 
-  // Ber�kna och skriv ut histogrammet
-  minText.beraknaHistogramAbs( );
-  minText.skrivHistogramAbs( );
+  // Beräkna och skriv ut histogrammet
+  minText.beraknaHistogramAbs();
+  minText.skrivHistogramAbs();
 
   return 0;
 }
 
 // -------------------------------------------------------
-// H�r skriver du klassimplementationen
+// Här skriver du klassimplementationen
+Text :: Text(){
+  mening = "";
+}
 
+void Text :: setText(const string &nyText){
+  mening = nyText;
+}
+
+bool Text :: beraknaHistogramAbs(){
+  int aktuell_bokstav;
+  totalen = 0;
+
+  // yttre loopen går igenom meningen
+  for(int i=0; i<mening.length(); i++){
+    // inre loopen kollar om bokstaven i meningen finns
+    // i bokstaver och itererar isåfall histogram och totalen
+    aktuell_bokstav = tolower(mening.at(i));
+    for(int j=0; j<ANTAL_BOKSTAVER; j++){
+      if(aktuell_bokstav == bokstaver[j]){
+        histogram[j]++;
+        totalen++;
+      }
+    }
+  }
+  if(totalen > 0){
+    return true;
+  }else{
+    return false;
+  }
+}
+
+void Text :: skrivHistogramAbs(){
+  cout << endl << "Resultat för bokstäverna A-Z\n" << endl;
+  cout << "Totala antalet bokstäver: " << totalen << endl;
+  cout << "Bokstavsfördelning:\n" << endl;
+
+  for(int i=0; i<ANTAL_BOKSTAVER; i++){
+    putchar(toupper(bokstaver[i]));
+    cout << ": " << histogram[i] << endl;
+  }
+}
 
 //--------------------------------------------------------
 // Funktionsdefinitioner:
